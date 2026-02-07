@@ -8,7 +8,6 @@
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     
     <style>
-        /* --- General Styles --- */
         body {
             font-family: 'Poppins', sans-serif;
             display: flex;
@@ -25,7 +24,6 @@
             -webkit-tap-highlight-color: transparent;
         }
 
-        /* --- 🎮 GAME OVERLAY --- */
         #game-overlay {
             position: fixed;
             top: 0;
@@ -43,7 +41,6 @@
             transition: opacity 0.5s ease;
         }
 
-        /* STAGE 1: MASH METER */
         #mash-container {
             display: flex;
             flex-direction: column;
@@ -94,7 +91,6 @@
             box-shadow: 0 2px 0 #990000, inset 0 5px 10px rgba(0,0,0,0.4);
         }
 
-        /* STAGE 2: CATCHER */
         #catcher-container {
             display: none; 
             width: 100%;
@@ -118,7 +114,6 @@
             100% { transform: scale(1); }
         }
 
-        /* --- Background --- */
         .heart-bg {
             position: absolute;
             width: 100%;
@@ -142,7 +137,6 @@
             100% { transform: translateY(-120vh) rotate(360deg); opacity: 0; }
         }
 
-        /* --- Main Container --- */
         .container {
             text-align: center;
             position: relative;
@@ -228,7 +222,6 @@
             line-height: 1.3;
         }
 
-        /* --- Date Planner --- */
         #date-planner {
             display: none;
             margin-top: 20px;
@@ -345,7 +338,7 @@
             <div id="sub-options-container">
                 <label id="sub-label" style="display:block; margin-top:10px; font-weight:bold; color:#555; text-align:left;">Details?</label>
                 <select id="sub-activity-select" onchange="handleSubSelection()">
-                    </select>
+                </select>
             </div>
 
             <a id="cinema-link-btn" href="#" target="_blank">🍿 Check Movies & Showtimes</a>
@@ -359,10 +352,8 @@
     </div>
 
     <script>
-        // --- ⚙️ SETTINGS ---
         const yourPhoneNumber = "201278560508"; 
 
-        // --- 🎮 GAME VARIABLES ---
         let loveMeter = 0;
         let decayRate = 0.4; 
         let gameActive = true;
@@ -370,7 +361,6 @@
         const heartsToCatch = 10;
         let spawnInterval;
 
-        // --- ELEMENTS ---
         const gameOverlay = document.getElementById('game-overlay');
         const mashContainer = document.getElementById('mash-container');
         const catcherContainer = document.getElementById('catcher-container');
@@ -379,7 +369,6 @@
         const mainContainer = document.getElementById('mainContainer');
         const mashBtn = document.getElementById('mash-btn');
 
-        // --- GAME LOOP ---
         setInterval(() => {
             if (gameActive && loveMeter > 0 && loveMeter < 100) {
                 loveMeter -= decayRate;
@@ -388,21 +377,16 @@
             }
         }, 50);
 
-        // --- STAGE 1: MASH ---
         function mashButton(event) {
-            // Stop zoom/scroll on rapid taps
             if (event) event.preventDefault();
             
             if (!gameActive) return;
             
-            // Increment
             loveMeter += 15; 
             
-            // Visual bounce
             mashBtn.style.transform = "scale(0.95)";
             setTimeout(() => mashBtn.style.transform = "scale(1)", 50);
 
-            // Win condition
             if (loveMeter >= 95) {
                 loveMeter = 100;
                 updateMeter();
@@ -417,22 +401,19 @@
         }
 
         function winStage1() {
-            if (!gameActive) return; // Prevent double firing
+            if (!gameActive) return; 
             gameActive = false;
             
-            // Visual success indicator
-            mashBtn.style.background = "#28a745"; // Green
+            mashBtn.style.background = "#28a745"; 
             mashBtn.innerText = "GO!";
             mashBtn.style.boxShadow = "0 0 20px #28a745";
 
-            // Try to fire confetti
             try {
                 triggerConfetti();
             } catch(e) {
                 console.log("Confetti failed, continuing anyway");
             }
             
-            // Force transition
             setTimeout(() => {
                 mashContainer.style.opacity = '0';
                 setTimeout(() => {
@@ -442,7 +423,6 @@
             }, 800);
         }
 
-        // --- STAGE 2: CATCHER ---
         function startStage2() {
             catcherContainer.style.display = 'block';
             setTimeout(() => catcherContainer.style.opacity = '1', 50);
@@ -503,7 +483,6 @@
             }, 500);
         }
 
-        // --- ⚙️ DATE PLANNER LOGIC ---
         const activities = {
             "Dine Out": {
                 label: "What are we eating?",
@@ -547,13 +526,11 @@
             const selectedActivity = mainSelect.value;
             const data = activities[selectedActivity];
 
-            // Reset
             subOptionsContainer.style.display = "none";
             cinemaLinkBtn.style.display = "none";
             extraInputContainer.style.display = "none";
             subActivitySelect.innerHTML = ""; 
 
-            // Handle "Other" main activity immediately
             if (selectedActivity === "Other") {
                 extraInputContainer.style.display = "block";
                 extraInput.placeholder = "What's the plan? 💭";
@@ -606,7 +583,6 @@
             }
         }
 
-        // --- YES/NO & EFFECTS ---
         const question = document.getElementById("question");
         const mainImage = document.getElementById("mainImage");
         const yesBtn = document.getElementById("yesBtn");
@@ -633,8 +609,7 @@
             try { triggerConfetti(); } catch(e){}
         }
 
-        const reasons = ["Because you have the cutest smile.", "Because you always know how to make me laugh.", "Because you give the best hugs.", "Because you're my best friend.", "Because you're smart and beautiful.", "Because life is just better with you.", "Because you support my dreams."];
-
+const reasons = ["Because you have the cutest smile.", "Because you always make me smile.", "Because you give the best hugs.", "Because you're my best friend.", "Because you're smart", "Because life is just better with you.", "Because you support me.", "Because you're my love.", "because you're beautiful"];
         function showReason() {
             const randomReason = reasons[Math.floor(Math.random() * reasons.length)];
             reasonDisplay.innerText = randomReason;
